@@ -1,3 +1,8 @@
-<h1>About {{ project }}</h1>
-<p> Crop disease detection for tomato, potato and bell pepper leaves</p>
-<a href="/"> Back to home </a>
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<h1>About AgroVision</h1>
+<p>An AI-powered crop disease detection system.</p>
+{% endblock %}

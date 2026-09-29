@@ -1,2 +1,8 @@
-<h1>AgroVision  is running</h1>
-<a href="/about"> About </a>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>AI-Powered Crop Disease Detection</h1>
+<p>Upload a crop leaf image and AgroVision will predict the possible disease using a trained deep learning model.</p>
+{% endblock %}
