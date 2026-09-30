@@ -104,3 +104,127 @@ h1 { color: var(--text); margin-top: 0; }
 .btn:hover {
     background: var(--green-dark);
 }
+
+/*----------Hero---------*/
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 24px 0 48px;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+    max-width: 480px;
+}
+
+.hero-image {
+    flex: 1;
+    max-width: 420px;
+    width: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+}
+
+/*On phones, stack the pitcure under text */
+@media (max-width: 700px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text p{
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+}
+    /*----Feature Cards-----*/
+
+    .features{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .feature-card {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+        box-shadow: 0 8px 24px rgba(47, 93, 58, 0.12);
+        transform: translateY(-3px);
+    }
+
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--green-light);
+        color: var(--green);
+        margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+        margin: 0 0 6px;
+        font-size: 1.1rem;
+    }
+
+    .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    /*One card per row on phones*/
+    @media (max-width: 700px) {
+        .features {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /*-----Notice Box-----*/
+    .notice {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--green-light);
+        border: 1px solid var(--green);
+        border-radius: 12px;
+        padding: 14px 20px;
+        color: var(--green-dark);
+    }
+
+    .notice svg {
+        flex-shrink: 0;
+    }
+
+    .notice p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
