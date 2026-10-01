@@ -3,6 +3,29 @@
 {% block title %}Upload{% endblock %}
 
 {% block content %}
-<h1>Upload Leaf Image</h1>
-<p>Upload a clear image of the crop leaf.</p>
+<section class="upload-page">
+    <h1>Upload Leaf Image</h1>
+    <p class="subtitle">Upload a clear image of the leaf.</p>
+
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+        <label for="file-input" class="drop-zone" id="drop-zone">
+            <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
+                <path fill="currentColor" d="M19.4 10A7 7 0 0 0 6.1 8.1 5.5 5.5 0 0 0 6.5 19H11v-4H8l4-4 4 4h-3v4h5.5a4.5 4.5 0 0 0 .9-9z"/>
+            </svg>
+            <span class="drop-text">Drag &amp; drop an image here</span>
+            <span class="drop-or">or</span>
+            <span class="btn btn-secondary">Choose Image</span>
+
+            <img id="preview" class="preview" alt="Preview of the selected leaf image" hidden>
+            <span id="file-name" class="file-name"></span>
+        </label>
+
+        <input type="file" id="file-input" name="leaf_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden>
+
+        <p class="upload-hint">Supported formats: JPG, JPEG, PNG . Max file size: 5MB</p>
+        <p id="error-message" class="error-message" role="alert"></p>
+
+        <button type="submit" class="btn" id="predict-btn" disabled>Predict Disease</button>
+    </form>
+</section>
 {% endblock %}
