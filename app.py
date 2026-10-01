@@ -14,5 +14,9 @@ def about():
 def how_it_works():
     return render_template("how_it_works.html")
 
+@app.route("/upload")
+def upload():
+    return render_template("upload.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
