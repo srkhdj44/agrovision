@@ -328,3 +328,86 @@ h1 { color: var(--text); margin-top: 0; }
         font-weight: 600;
         margin: 0 0 16px;
     }
+
+    /* ---- How It Works ------- */
+    .how-page {
+        text-align: center;
+    }
+
+    .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 40px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        counter-reset: step;
+    }
+
+    .step {
+        position: relative;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 36px 20px 24px;
+        counter-increment: step;
+    }
+
+    /* The number badge at the top of each card */
+    .step::before {
+        content: counter;
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    /* The arrow between cards (not after the last one) */
+    .step:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -26px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--green);
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .step h3 {
+        margin: 0 0 6px;
+        font-size: 1.05rem;
+    }
+
+    .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    /* Tablets: 2 per row, no arrows */
+    @media (max-width: 900px) {
+        .steps {
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 40px;
+        }
+
+        .step::after {
+            display: none;
+        }
+    }
+
+    /* Phones: 1 per row */
+    @media (max-width: 600px) {
+        .steps {
+            grid-template-columns: 1fr;
+        }
+    }
