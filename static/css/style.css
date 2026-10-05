@@ -322,3 +322,9 @@ h1 { color: var(--text); margin-top: 0; }
         background: #c9d3cc;
         cursor: not-allowed;
     }
+
+    .success-message {
+        color: var(--green-dark);
+        font-weight: 600;
+        margin: 0 0 16px;
+    }

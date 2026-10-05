@@ -23,8 +23,10 @@
         <input type="file" id="file-input" name="leaf_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden>
 
         <p class="upload-hint">Supported formats: JPG, JPEG, PNG . Max file size: 5MB</p>
-        <p id="error-message" class="error-message" role="alert"></p>
-
+        <p id="error-message" class="error-message" role="alert">{{ error or ""}}</p>
+        {% if success %}
+        <p class="success-message">{{ success }}</p>
+        {% endif %}
         <button type="submit" class="btn" id="predict-btn" disabled>Predict Disease</button>
     </form>
 </section>
