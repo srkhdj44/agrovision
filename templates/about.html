@@ -3,6 +3,57 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
-<h1>About AgroVision</h1>
-<p>An AI-powered crop disease detection system.</p>
+<section class="about-page">
+    <h1>About AgroVision</h1>
+    <p class="subtitle">An AI-powered crop disease detection sytem</p>
+
+    <div class="about-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                    <path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"></path>
+                </svg>
+            </div>
+            <h3>Purpose</h3>
+            <p>To support early crop disease identification and help farmers take timely action for healthier yields.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                    <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-9 14-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 8z"></path>
+                </svg>
+            </div>
+            <h3>What We Do</h3>
+            <p>We analyse uploaded leaf images using AI and provide a predicted disease result with useful guidance.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                    <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-9 14-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 8z"></path>
+                </svg>
+            </div>
+            <h3>Main Features</h3>
+            <ul class="feature-list">
+                <li>Upload a leaf image</li>
+                <li>Predict the disease class</li>
+                <li>View the confidence score</li>
+                <li>See which parts of the leaf the model focused on</li>
+                <li>Read disease information and guidance</li>
+            </ul>
+        </div>
+        
+        <div class="feature-card about-note">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                    <path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"></path>
+                </svg>
+            </div>
+            
+            <h3>Important Note</h3>
+            <p>AgroVision provides AI-based prediction support only. Please consult an agricultural expert for confirmation.</p>
+        </div>
+    </div>
+</section>
 {% endblock %}
