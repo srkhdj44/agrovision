@@ -1,0 +1,49 @@
+{
+    "Tomato___Early_blight": {
+        "display_name": "Tomato Early Blight",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Fungus (Alternaria solani and Alternaria tomatophila)",
+        "description": "A common fungal disease of tomato and potato. It starts on the older, lower leaves and moves up the plant. Badly infected leaves turn brown and fall off.",
+        "symptoms": "Small dark spots on lower leaves that grow into round brown spots with target-like rings. The area around each spot often turns yellow.",
+        "guidance": [
+            "Remove leaves with spots and bury or burn them. Do not compost them.",
+            "Water at the base of the plant and use mulch so soil does not splash onto the leaves.",
+            "Stake the plants and leave space between them so the leaves dry faster.",
+            "Do not plant tomatoes or peppers in the same spot for two years."
+        ],
+        "source": "https://extension.umn.edu/disease-management/early-blight-tomato-and-potato"
+    },
+
+    "Tomato___Late_blight": {
+        "display_name": "Tomato Late Blight",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Water mould (Phytophthora infestans)",
+        "description": "A fast-spreading disease of tomato and potato that is worst in cool, wet weather. It can destroy plants within days once it takes hold.",
+        "symptoms": "Irregular, water-soaked patches that turn light brown, often starting on the upper leaves. In humid weather, white fuzzy growth can appear under the leaves.",
+        "guidance": [
+            "Remove and destroy infected plants and fruit straight away to slow the spread.",
+            "Avoid wetting the leaves when watering, and water early in the day.",
+            "Choose resistant varieties when planting again.",
+            "Ask a local agriculture officer before using any fungicide, as treatment works best before infection."
+        ],
+        "source": "https://content.ces.ncsu.edu/tomato-late-blight"
+    },
+
+    "Tomato___healthy": {
+        "display_name": "Healthy Tomato Leaf",
+        "crop": "Tomato",
+        "status": "healthy",
+        "cause": "",
+        "description": "No signs of disease were detected on this leaf.",
+        "symptoms": "",
+        "guidance": [
+            "Keep checking the older, lower leaves, where many diseases start.",
+            "Water at the base of the plant and keep the leaves dry.",
+            "Leave space between plants so air can flow.",
+            "Remove weeds and fallen plant debris around the plants."
+        ],
+        "source": "https://extension.umn.edu/disease-management/early-blight-tomato-and-potato"
+    }
+}
