@@ -355,7 +355,7 @@ h1 { color: var(--text); margin-top: 0; }
 
     /* The number badge at the top of each card */
     .step::before {
-        content: counter;
+        content: counter(step);
         position: absolute;
         top: -14px;
         left: 50%;
