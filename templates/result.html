@@ -26,7 +26,7 @@
                 Healthy
             {% else %}
                 <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg>
-                Disease detected
+                {{ 'Pest detected' if info and info.status == 'pest' else 'Disease detected' }}
             {% endif %}
         </span>
         <h1>{{ info.display_name if info else class_name }}</h1>

@@ -45,5 +45,117 @@
             "Remove weeds and fallen plant debris around the plants."
         ],
         "source": "https://extension.umn.edu/disease-management/early-blight-tomato-and-potato"
+    },
+
+     "Tomato___Bacterial_spot": {
+        "display_name": "Tomato Bacterial Spot",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Bacterium (Xanthomonas species)",
+        "description": "A bacterial disease of tomato and pepper that spreads quickly in warm, humid weather. It is hard to control once it is established, so prevention is important.",
+        "symptoms": "Small yellow-green spots with a water-soaked edge. The spots join together, turn brown and dry, and can leave holes and torn leaf edges.",
+        "guidance": [
+            "Start with healthy, inspected seedlings.",
+            "Do not handle or work with plants while the leaves are wet.",
+            "Remove infected plant debris after the season, and control nearby weeds.",
+            "Do not plant tomatoes or peppers in the same spot in the following year."
+        ],
+        "source": "https://yardandgarden.extension.iastate.edu/encyclopedia/bacterial-spot-pepper-and-tomatoes"
+    },
+
+     "Tomato___Leaf_Mold": {
+        "display_name": "Tomato Leaf Mold",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Fungus (Passalora fulva)",
+        "description": "A fungal disease that thrives in very humid air, especially in greenhouses and high tunnels. It usually starts on the lower leaves.",
+        "symptoms": "Pale green or yellow spots on the upper side of the leaf, with olive-green, velvety mould on the underside. Badly affected leaves die.",
+        "guidance": [
+            "Improve air flow by spacing plants and opening greenhouse sides or vents.",
+            "Remove infected leaves and plants and dispose of them away from the garden.",
+            "Clean tools and equipment after working with infected plants.",
+            "Choose resistant varieties and clean seed for the next planting."
+        ],
+        "source": "https://www.vegetables.cornell.edu/pest-management/disease-factsheets/tomato-leaf-mold/"
+    },
+
+     "Tomato___Septoria_leaf_spot": {
+        "display_name": "Tomato Septoria Leaf Spot",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Fungus (Septoria lycopersici)",
+        "description": "A common fungal leaf disease of tomato, favoured by wet weather. It often appears when the first fruits start to form.",
+        "symptoms": "Many small, round grey spots with dark edges on the lower leaves. Tiny black dots may be seen inside the spots. Affected leaves turn yellow and die.",
+        "guidance": [
+            "Remove infected leaves during the season, and clear all infected plant parts at the end.",
+            "Water at the soil level and keep the leaves dry.",
+            "Use mulch to stop soil splashing onto the leaves.",
+            "Space plants and remove the lowest leaves once plants are fruiting, to improve air flow."
+        ],
+        "source": "https://extension.umd.edu/resource/septoria-leaf-spot-tomatoes"
+    },
+
+    "Tomato___Spider_mites Two-spotted_spider_mite": {
+        "display_name": "Tomato Two-Spotted Spider Mite",
+        "crop": "Tomato",
+        "status": "pest",
+        "cause": "Pest (two-spotted spider mite, Tetranychus urticae)",
+        "description": "Damage caused by tiny mites, not by a disease. They feed on the leaves and multiply fast in hot, dry weather.",
+        "symptoms": "Fine yellow, white or brown speckles on the leaves, starting low on the plant. Heavy infestations show fine webbing, bronzed leaves and leaf drop.",
+        "guidance": [
+            "Water plants regularly, as dry, stressed plants are more affected.",
+            "Spray the plants with water to knock mites off the leaves.",
+            "Use insecticidal soap or horticultural oil if mites keep spreading.",
+            "Ask a local agriculture officer for advice on suitable products."
+        ],
+        "source": "https://www.udel.edu/academics/colleges/canr/cooperative-extension/fact-sheets/two-spotted-spider-mites/"
+    },
+
+    "Tomato___Target_Spot": {
+        "display_name": "Tomato Target Spot",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Fungus (Corynespora cassiicola)",
+        "description": "A fungal disease that starts on the older leaves and spreads upward. It spreads fast in warm, wet and windy weather.",
+        "symptoms": "Small spots with a yellow edge that grow up to about 1 cm and show ring patterns, like a target. Leaves turn yellow, collapse and die.",
+        "guidance": [
+            "Remove some lower branches to improve air flow, and remove infected lower leaves.",
+            "Avoid overhead watering.",
+            "Keep the area free of weeds.",
+            "After harvest, collect and destroy crop remains, and wait three years before planting tomato there again."
+        ],
+        "source": "https://apps.lucidcentral.org/ppp/text/web_full/entities/tomato_target_spot_163.htm"
+    },
+
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+        "display_name": "Tomato Yellow Leaf Curl Virus",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Virus (spread by whiteflies)",
+        "description": "A virus spread by whiteflies. Infected plants cannot be cured, so control focuses on removing infected plants and managing whiteflies.",
+        "symptoms": "Young leaves turn yellow between the veins and at the edges, and curl and crumple. Plants become stunted and bushy, and flowers may drop.",
+        "guidance": [
+            "Remove and destroy infected plants to stop the virus spreading.",
+            "Check for whiteflies with yellow sticky traps.",
+            "Spray neem, pyrethrin or insecticidal soap on the undersides of leaves if whiteflies are many.",
+            "Plant resistant varieties and healthy seedlings next time."
+        ],
+        "source": "https://content.ces.ncsu.edu/tomato-yellow-leaf-curl-virus"
+    },
+
+    "Tomato___Tomato_mosaic_virus": {
+        "display_name": "Tomato Mosaic Virus",
+        "crop": "Tomato",
+        "status": "disease",
+        "cause": "Virus (tomato mosaic virus)",
+        "description": "A virus that spreads through seed and by handling plants, entering through small wounds. There is no chemical treatment.",
+        "symptoms": "Leaves show yellow and green mottled patterns and can be distorted. Plants may be stunted.",
+        "guidance": [
+            "Remove infected plants straight away.",
+            "Wash hands and tools after handling plants, and avoid touching plants after using tobacco products.",
+            "Use certified disease-free seed.",
+            "Grow resistant varieties."
+        ],
+        "source": "https://extension.usu.edu/planthealth/ipm/notes_ag/veg-TMV-ToMV"
     }
 }
