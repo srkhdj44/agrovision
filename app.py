@@ -1,3 +1,8 @@
+import json
+import os
+import random
+import uuid
+
 from flask import Flask, render_template, request
 from PIL import Image
 
@@ -7,6 +12,23 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+
+# Folder paths, based on where app.py is
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Load the disease information once, when the app starts
+with open (os.path.join(BASE_DIR, "data", "diseases.json"), encoding="utf-8") as f:
+    DISEASES = json.load(f)
+
+def predict_placeholder(image_path):
+    """Temporary stand-in for the real model.
+    Picks a random class that has information with a confidence.
+    Replace this with the real model in week 6."""
+    class_name = random.choice(list(DISEASES.keys()))
+    confidence = round(random.uniform(0.70, 0.99), 2)
+    return class_name, confidence
 
 def allowed_file(filename):
     """Return True if the filename ends with .jpg, .jpeg or .png."""
@@ -47,14 +69,28 @@ def upload():
     except Exception:
         return render_template("upload.html", error="This file is not a valid image. Please try another one.")
 
-    # All checks passed. The model will go here in week 4.
-    return render_template("upload.html", success=f"Image received: {file.filename}")
+    # All checks passed. save the image with a unique name
+    file.stream.seek(0)
+    extension = file.filename.rsplit(".",1)[1].lower()
+    saved_name = f"{uuid.uuid4().hex}.{extension}"
+    saved_path = os.path.join(UPLOAD_FOLDER, saved_name) 
+    file.save(saved_path)
 
+    # Predict (placeholder for now) and look up the disease information
+    class_name, confidence = predict_placeholder(saved_path)
+    info = DISEASES.get(class_name)
+
+    return render_template(
+        "result.html",
+        image_file=saved_name,
+        class_name=class_name,
+        confidence=confidence,
+        info=info,
+    )
 
 @app.errorhandler(413)
 def file_too_large(error):
-    return render_template("upload.html", error="This image is larger than 5MB. Please choose a smaller one."), 413
-
+    return render_template("upload.html", error="This image is larger than 5MB. Please choose a smaller one"), 413
 
 if __name__ == "__main__":
     app.run(debug=True)

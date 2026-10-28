@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Result{% endblock %}
+
+{% block content %}
+{% set is_healthy = info and info.status == "healthy" %}
+{% set pct = (confidence* 100) | round | int %}
+
+<section class="result-page">
+
+    <!-- Banner: badge + disease name -->
+     <div class="result-banner {{ 'healthy' if is_healthy else 'disease' }}">
+        <span class="result-badge">
+         {% if is_healthy %}
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 9z"/></svg>
+            Healthy
+         {% else %}
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg>
+                Disease detected
+         {% endif %}
+         </span>
+         <h1>{{ info.display_name if info else class_name }}</h1>
+         {% if info %}<p class="result-crop">{{ info.crop }}</p>{% endif %}
+     </div>
+
+     <!-- Image + disease information-->
+      <div class="result-grid">
+         <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="The uploaded leaf image" class="result-image">
+
+         <div class="result-card">
+            <h2 class="card-title">
+               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+               Disease Information
+            </h2>
+            {% if info %}
+                <p>{{ info.description }}</p>
+                {% if info.symptoms %}<p><strong>Symptoms:</strong> {{ info.symptoms }}</p>{% endif %}
+                {% if info.cause %}<p><strong>Caused by:</strong> {{ info.cause }}</p>{% endif %}
+            {% else %}
+                <p>No additional information available for this class yet.</p>
+            {% endif %}
+         </div>
+      </div>
+
+      <!-- Confidence score-->
+       <div class="result-card confidence-card">
+         <div class="confidence-main">
+            <h2 class="card-label">Confidence Score</h2>
+            <p class="card-sub">Based on the model's output probability</p>
+            <div class="confidence-bar">
+               <div class="confidence-fill" style="width: {{ pct }}%;"></div>
+            </div>
+            <div class="confidence-scale">
+                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+            </div>
+         </div>
+         <span class="confidence-value">{{ pct }}%</span>
+      </div>
+
+       <!-- Guidance -->
+        {% if info and info.guidance %}
+        <div class="result-card">
+            <h2 class="card-label">Basic Guidance</h2>
+            <ol class="guidance-list">
+                {% for step in info.guidance %}
+                   <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+            {% if info.source %}
+               <p class="result-source">Source: <a href="{{ info.source }}" target="_blank" rel="noopener">{{ info.source }}</a></p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="notice">
+            <p>AgroVision provides AI-based prediction support only. Please consult an agricultural expert for confirmation.</p>
+        </div>
+
+        <div class="result-actions">
+            <a href="{{ url_for('upload') }}" class="btn">Upload Another Image</a>
+        </div>
+</section>
+{% endblock %}
