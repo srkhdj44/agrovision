@@ -472,6 +472,11 @@ h1 { color: var(--text); margin-top: 0; }
     .about-note .feature-icon {
         background: #ffffff;
     }
+    
+    .about-note {
+        background: var(--green-light);
+        border-color: var(--green);
+    }
 
     /*-----Result Page-----*/
     .result-page {
@@ -674,3 +679,52 @@ h1 { color: var(--text); margin-top: 0; }
         font-size: 1.6rem;
     }
 }
+
+    /* ---------- Photo tips ---------- */
+    .photo-tips {
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 12px 0 16px;
+}
+
+.result-card .photo-tips {
+    margin: 12px 0 0;
+    background: var(--bg);
+}
+
+.tips-title {
+    font-size: 0.95rem;
+    margin: 0 0 6px;
+}
+
+.tips-list {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.tips-list li {
+    margin-bottom: 2px;
+}
+
+/* ---------- Uncertain result ---------- */
+.result-banner.uncertain {
+    background: #8a6a1d;
+}
+
+.result-card .closest-match {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.confidence-fill.low {
+    background: #c99a2e;
+}
+
+.confidence-value.low {
+    color: #8a6a1d;
+} 

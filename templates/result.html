@@ -4,80 +4,101 @@
 
 {% block content %}
 {% set is_healthy = info and info.status == "healthy" %}
-{% set pct = (confidence* 100) | round | int %}
+{% set pct = (confidence * 100) | round | int %}
 
 <section class="result-page">
 
-    <!-- Banner: badge + disease name -->
-     <div class="result-banner {{ 'healthy' if is_healthy else 'disease' }}">
+    <!-- Banner -->
+    {% if low_confidence %}
+    <div class="result-banner uncertain">
         <span class="result-badge">
-         {% if is_healthy %}
-            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 9z"/></svg>
-            Healthy
-         {% else %}
-            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg>
-                Disease detected
-         {% endif %}
-         </span>
-         <h1>{{ info.display_name if info else class_name }}</h1>
-         {% if info %}<p class="result-crop">{{ info.crop }}</p>{% endif %}
-     </div>
-
-     <!-- Image + disease information-->
-      <div class="result-grid">
-         <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="The uploaded leaf image" class="result-image">
-
-         <div class="result-card">
-            <h2 class="card-title">
-               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
-               Disease Information
-            </h2>
-            {% if info %}
-                <p>{{ info.description }}</p>
-                {% if info.symptoms %}<p><strong>Symptoms:</strong> {{ info.symptoms }}</p>{% endif %}
-                {% if info.cause %}<p><strong>Caused by:</strong> {{ info.cause }}</p>{% endif %}
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 16h-2v-2h2zm2.1-7.8-.9.9c-.7.7-1.2 1.3-1.2 2.9h-2v-.5c0-1.1.4-2.1 1.2-2.8l1.2-1.3c.4-.3.6-.8.6-1.4a2 2 0 0 0-4 0H8a4 4 0 0 1 8 0c0 .9-.4 1.6-.9 2.1z"/></svg>
+            Uncertain
+        </span>
+        <h1>We're not sure about this image</h1>
+        <p class="result-crop">Please try again with a clearer photo of a single crop leaf.</p>
+    </div>
+    {% else %}
+    <div class="result-banner {{ 'healthy' if is_healthy else 'disease' }}">
+        <span class="result-badge">
+            {% if is_healthy %}
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 9z"/></svg>
+                Healthy
             {% else %}
-                <p>No additional information available for this class yet.</p>
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg>
+                Disease detected
             {% endif %}
-         </div>
-      </div>
+        </span>
+        <h1>{{ info.display_name if info else class_name }}</h1>
+        {% if info %}<p class="result-crop">Crop: {{ info.crop }}</p>{% endif %}
+    </div>
+    {% endif %}
 
-      <!-- Confidence score-->
-       <div class="result-card confidence-card">
-         <div class="confidence-main">
+    <!-- Image + information -->
+    <div class="result-grid">
+        <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="The uploaded leaf image" class="result-image">
+
+        <div class="result-card">
+            {% if low_confidence %}
+                <h2 class="card-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                    Why am I seeing this?
+                </h2>
+                <p>The model's confidence was too low to give a reliable result. This can happen when the photo is unclear, shows more than one leaf, has a busy background, or is not a crop leaf at all.</p>
+                <p class="closest-match">Closest match: <strong>{{ info.display_name if info else class_name }}</strong> ({{ pct }}%), not reliable.</p>
+                {% include "_photo_tips.html" %}
+            {% else %}
+                <h2 class="card-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                    {{ 'Leaf Information' if is_healthy else 'Disease Information' }}
+                </h2>
+                {% if info %}
+                    <p>{{ info.description }}</p>
+                    {% if info.symptoms %}<p><strong>Symptoms:</strong> {{ info.symptoms }}</p>{% endif %}
+                    {% if info.cause %}<p><strong>Caused by:</strong> {{ info.cause }}</p>{% endif %}
+                {% else %}
+                    <p>No additional information is available for this class yet.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Confidence score -->
+    <div class="result-card confidence-card">
+        <div class="confidence-main">
             <h2 class="card-label">Confidence Score</h2>
             <p class="card-sub">Based on the model's output probability</p>
             <div class="confidence-bar">
-               <div class="confidence-fill" style="width: {{ pct }}%;"></div>
+                <div class="confidence-fill {{ 'low' if low_confidence }}" style="width: {{ pct }}%;"></div>
             </div>
             <div class="confidence-scale">
                 <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
             </div>
-         </div>
-         <span class="confidence-value">{{ pct }}%</span>
-      </div>
-
-       <!-- Guidance -->
-        {% if info and info.guidance %}
-        <div class="result-card">
-            <h2 class="card-label">Basic Guidance</h2>
-            <ol class="guidance-list">
-                {% for step in info.guidance %}
-                   <li>{{ step }}</li>
-                {% endfor %}
-            </ol>
-            {% if info.source %}
-               <p class="result-source">Source: <a href="{{ info.source }}" target="_blank" rel="noopener">{{ info.source }}</a></p>
-            {% endif %}
         </div>
+        <span class="confidence-value {{ 'low' if low_confidence }}">{{ pct }}%</span>
+    </div>
+
+    <!-- Guidance: only when the result is reliable -->
+    {% if not low_confidence and info and info.guidance %}
+    <div class="result-card">
+        <h2 class="card-label">Basic Guidance</h2>
+        <ol class="guidance-list">
+            {% for step in info.guidance %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+        {% if info.source %}
+            <p class="result-source">Source: <a href="{{ info.source }}" target="_blank" rel="noopener">{{ info.source }}</a></p>
         {% endif %}
+    </div>
+    {% endif %}
 
-        <div class="notice">
-            <p>AgroVision provides AI-based prediction support only. Please consult an agricultural expert for confirmation.</p>
-        </div>
+    <div class="notice">
+        <p>AgroVision provides AI-based prediction support only. Please consult an agricultural expert for confirmation.</p>
+    </div>
 
-        <div class="result-actions">
-            <a href="{{ url_for('upload') }}" class="btn">Upload Another Image</a>
-        </div>
+    <div class="result-actions">
+        <a href="{{ url_for('upload') }}" class="btn">Upload Another Image</a>
+    </div>
 </section>
 {% endblock %}

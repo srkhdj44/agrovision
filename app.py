@@ -12,6 +12,9 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+# Below this confidence, the app says it is not sure instead of showing a disease.
+# 0.60 is a starting value. Tune in with Afiqah once the real model is in.
+CONFIDENCE_THRESHOLD = 0.60
 
 # Folder paths, based on where app.py is
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +30,7 @@ def predict_placeholder(image_path):
     Picks a random class that has information with a confidence.
     Replace this with the real model in week 6."""
     class_name = random.choice(list(DISEASES.keys()))
-    confidence = round(random.uniform(0.70, 0.99), 2)
+    confidence = round(random.uniform(0.30, 0.99), 2)
     return class_name, confidence
 
 def allowed_file(filename):
@@ -86,6 +89,7 @@ def upload():
         class_name=class_name,
         confidence=confidence,
         info=info,
+        low_confidence=confidence < CONFIDENCE_THRESHOLD,
     )
 
 @app.errorhandler(413)
