@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 import tensorflow as tf
-import PIL as Image
+from PIL import Image
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "best_model.keras")
