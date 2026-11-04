@@ -16,6 +16,12 @@ ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 # 0.60 is a starting value. Tune in with Afiqah once the real model is in.
 CONFIDENCE_THRESHOLD = 0.60
 
+# True = use Afiqah's model. False= use the random Placeholder (no tensorflow needed)
+USE_REAL_MODEL = True
+
+if USE_REAL_MODEL:
+    from predictor import predict
+
 # Folder paths, based on where app.py is
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
@@ -80,7 +86,10 @@ def upload():
     file.save(saved_path)
 
     # Predict (placeholder for now) and look up the disease information
-    class_name, confidence = predict_placeholder(saved_path)
+    if USE_REAL_MODEL:
+        class_name, confidence = predict(saved_path)
+    else:
+        class_name, confidence = predict_placeholder(saved_path)
     info = DISEASES.get(class_name)
 
     return render_template(
