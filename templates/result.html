@@ -63,6 +63,29 @@
         </div>
     </div>
 
+        <!-- Grad-CAM: which parts of the leaf the model focused on -->
+    {% if not low_confidence %}
+    <div class="result-card">
+        <h2 class="card-label">What the Model Looked At</h2>
+        <p class="card-sub">Red and yellow areas influenced the result the most.</p>
+        <div class="gradcam-grid">
+            <figure>
+                <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Your uploaded leaf" class="gradcam-image">
+                <figcaption>Your photo</figcaption>
+            </figure>
+            <figure>
+                {% if heatmap_file %}
+                    <img src="{{ url_for('static', filename='uploads/' + heatmap_file) }}" alt="Heatmap of the areas the model focused on" class="gradcam-image">
+                {% else %}
+                    <div class="gradcam-placeholder">Heatmap coming soon</div>
+                {% endif %}
+                <figcaption>Model focus</figcaption>
+            </figure>
+        </div>
+    </div>
+    {% endif %}
+
+
     <!-- Confidence score -->
     <div class="result-card confidence-card">
         <div class="confidence-main">

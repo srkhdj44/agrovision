@@ -728,3 +728,43 @@ h1 { color: var(--text); margin-top: 0; }
 .confidence-value.low {
     color: #8a6a1d;
 } 
+
+/* ---------- Grad-CAM ---------- */
+.gradcam-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.gradcam-grid figure {
+    margin: 0;
+}
+
+.gradcam-image,
+.gradcam-placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+}
+
+.gradcam-image {
+    object-fit: cover;
+    display: block;
+}
+
+.gradcam-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.gradcam-grid figcaption {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+}
