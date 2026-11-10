@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroVision design preview</title>
+<style>
+:root {
+    --green: #3f7d4f;
+    --green-dark: #2f5d3a;
+    --green-light: #eef4ef;
+    --bg: #ffffff;
+    --white: #ffffff;
+    --text: #1c1c1c;
+    --muted: #6b6b6b;
+    --border: #e6e6e3;
+    --amber: #8a6a1d;
+    --radius: 8px;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+h1, h2, h3 { letter-spacing: -0.01em; margin-top: 0; }
+a { color: inherit; }
+
+/* Preview bar (not part of the website) */
+.preview-bar {
+    background: #1c1c1c;
+    color: #d8d8d8;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+}
+.preview-bar strong { color: #ffffff; font-weight: 600; }
+.preview-bar button {
+    font: inherit;
+    color: #d8d8d8;
+    background: transparent;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 3px 10px;
+    cursor: pointer;
+}
+.preview-bar button.on { background: #ffffff; color: #1c1c1c; border-color: #ffffff; }
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 1.15rem; font-weight: 600; color: var(--green-dark); text-decoration: none; cursor: pointer; }
+.navbar nav { display: flex; align-items: center; gap: 28px; }
+.navbar nav a {
+    text-decoration: none;
+    font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+.navbar nav a:hover { color: var(--green); }
+.navbar nav a.active { color: var(--green-dark); border-bottom-color: var(--green); }
+.navbar nav a.nav-cta {
+    background: var(--green);
+    color: var(--white);
+    padding: 6px 14px;
+    border: 0;
+    border-radius: var(--radius);
+}
+.navbar nav a.nav-cta:hover { background: var(--green-dark); }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 48px 24px; }
+.page { display: none; }
+.page.show { display: block; }
+
+.btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    padding: 10px 20px;
+    border: 0;
+    border-radius: var(--radius);
+    font: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn:hover { background: var(--green-dark); }
+.text-link { color: var(--green-dark); font-weight: 500; cursor: pointer; }
+
+.eyebrow { font-size: 0.85rem; font-weight: 500; color: var(--green); margin: 0 0 12px; }
+.lead { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0 0 28px; }
+.notice { border-left: 2px solid var(--border); padding: 4px 0 4px 14px; color: var(--muted); font-size: 0.95rem; margin: 0; }
+.rule { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+
+/* Home */
+.hero { display: flex; align-items: center; gap: 48px; }
+.hero-text { flex: 1; }
+.hero-text h1 { font-size: 2.5rem; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 16px; }
+.hero-image { flex: 1; max-width: 420px; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; }
+.hero-image svg { width: 100%; height: 100%; display: block; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.feature h3 { font-size: 1rem; font-weight: 600; margin: 0 0 6px; }
+.feature p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.crops { color: var(--muted); font-size: 0.95rem; margin: 32px 0; }
+.crops strong { color: var(--text); font-weight: 600; }
+
+/* Text pages */
+.narrow { max-width: 680px; }
+.narrow h1 { font-size: 2rem; font-weight: 600; margin-bottom: 8px; }
+.steps { list-style: none; padding: 0; margin: 32px 0; counter-reset: step; }
+.steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
+}
+.steps li:last-child { border-bottom: 1px solid var(--border); }
+.steps li::before { content: counter(step, decimal-leading-zero); color: var(--green); font-weight: 600; font-size: 0.9rem; padding-top: 2px; }
+.steps h3 { font-size: 1rem; font-weight: 600; margin: 0 0 2px; }
+.steps p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.about-section { padding: 20px 0; border-top: 1px solid var(--border); }
+.about-section h2 { font-size: 1rem; font-weight: 600; margin: 0 0 6px; }
+.about-section p, .about-section ul { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.about-section ul { padding-left: 18px; }
+
+/* Upload */
+.drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 40px 24px;
+    border: 1.5px dashed #c9c9c5;
+    border-radius: var(--radius);
+    text-align: center;
+    margin: 24px 0 12px;
+}
+.drop-zone .drop-text { font-weight: 500; }
+.drop-zone .drop-or { color: var(--muted); font-size: 0.9rem; }
+.drop-zone .thumb { width: 180px; aspect-ratio: 1 / 1; border-radius: var(--radius); overflow: hidden; }
+.drop-zone .thumb svg { width: 100%; height: 100%; display: block; }
+.file-name { font-size: 0.9rem; color: var(--muted); }
+.hint { color: var(--muted); font-size: 0.85rem; margin: 0 0 24px; }
+.tips h3 { font-size: 0.95rem; font-weight: 600; margin: 0 0 6px; }
+.tips ul { margin: 0 0 24px; padding-left: 18px; color: var(--muted); font-size: 0.95rem; }
+
+/* Result */
+.result { max-width: 760px; margin: 0 auto; }
+.result-label { font-size: 0.85rem; font-weight: 500; color: var(--amber); margin: 0 0 6px; }
+.result h1 { font-size: 2.2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
+.result-crop { color: var(--muted); margin: 0 0 28px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pair figure { margin: 0; }
+.pair .img { aspect-ratio: 1 / 1; border-radius: var(--radius); overflow: hidden; }
+.pair svg { width: 100%; height: 100%; display: block; }
+.pair figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+.block { padding: 24px 0; border-top: 1px solid var(--border); }
+.block:first-of-type { margin-top: 28px; }
+.block h2 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 12px; }
+.block p { margin: 0 0 8px; font-size: 0.95rem; }
+.conf-row { display: flex; align-items: center; gap: 20px; }
+.conf-bar { flex: 1; height: 8px; background: var(--green-light); border-radius: 999px; overflow: hidden; }
+.conf-fill { height: 100%; width: 0; background: var(--green); border-radius: 999px; transition: width 0.8s ease-out; }
+.conf-value { font-size: 1.8rem; font-weight: 600; color: var(--green-dark); min-width: 4ch; text-align: right; }
+.others { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; }
+.others li { display: flex; justify-content: space-between; padding: 6px 0; color: var(--muted); }
+.guidance { margin: 0; padding-left: 20px; font-size: 0.95rem; }
+.guidance li { padding: 4px 0 4px 4px; }
+.guidance li::marker { color: var(--green); font-weight: 600; }
+.source { font-size: 0.85rem; color: var(--muted); margin-top: 12px !important; }
+
+.footer { text-align: center; padding: 16px 24px; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 24px; }
+
+@media (max-width: 900px) {
+    .hero { flex-direction: column; align-items: flex-start; }
+    .hero-image { max-width: 100%; width: 100%; }
+}
+@media (max-width: 600px) {
+    .navbar { padding: 12px 16px; justify-content: center; }
+    .navbar nav { gap: 14px; font-size: 0.95rem; }
+    .container { padding: 28px 16px; }
+    .hero-text h1 { font-size: 1.9rem; }
+    .features { grid-template-columns: 1fr; gap: 20px; }
+    .result h1 { font-size: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}
+
+/* ---- Background options (preview only) ---- */
+.navbar, .footer { background: var(--white); }
+body.bg-pattern { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cg fill='none' stroke='%233f7d4f' stroke-width='1.4' stroke-linecap='round' opacity='0.13'%3E%3Cg transform='translate(12 8) rotate(24 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3Cg transform='translate(84 78) rotate(-38 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); background-size: 150px 150px; }
+body.bg-corner {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 68'%3E%3Cg transform='rotate(-28 30 34)'%3E%3Cpath fill='%233f7d4f' opacity='0.09' d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='0.7' stroke-linecap='round' d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 68'%3E%3Cg transform='rotate(150 30 34)'%3E%3Cpath fill='%233f7d4f' opacity='0.09' d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='0.7' stroke-linecap='round' d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right -110px top 40px, left -130px bottom -90px;
+    background-size: 480px auto, 520px auto;
+}
+body.bg-fade { position: relative; }
+body.bg-fade::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 640px;
+    z-index: -1;
+    background-color: var(--green-light);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cg fill='none' stroke='%233f7d4f' stroke-width='1.4' stroke-linecap='round' opacity='0.22'%3E%3Cg transform='translate(12 8) rotate(24 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3Cg transform='translate(84 78) rotate(-38 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 150px 150px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+}
+body.bg-bold { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cg fill='none' stroke='%233f7d4f' stroke-width='1.4' stroke-linecap='round' opacity='0.7'%3E%3Cg transform='translate(12 8) rotate(24 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3Cg transform='translate(84 78) rotate(-38 30 34)'%3E%3Cpath d='M30 10C45 18 50 35 40 50 35 56 30 58 30 58 30 58 25 56 20 50 10 35 15 18 30 10Z'/%3E%3Cpath d='M30 16V58M30 30L22 24M30 30L38 24M30 42L21 36M30 42L39 36'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); background-size: 150px 150px; background-color: #dcebdf; }
+.preview-bar .grp { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<!-- Shared leaf drawing, reused as the placeholder photo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <g id="leaf">
+            <path d="M100 18 C150 40 172 92 150 150 C138 176 112 186 100 188 C88 186 62 176 50 150 C28 92 50 40 100 18Z" fill="#3f8a4b"/>
+            <path d="M100 26 L100 184 M100 70 L70 52 M100 70 L130 52 M100 105 L62 88 M100 105 L138 88 M100 140 L68 128 M100 140 L132 128" stroke="#2d6a39" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="76" cy="100" rx="13" ry="10" fill="#5b4a2c"/>
+            <ellipse cx="76" cy="100" rx="19" ry="15" fill="none" stroke="#c9b24a" stroke-width="4" opacity="0.8"/>
+            <ellipse cx="124" cy="132" rx="10" ry="8" fill="#5b4a2c"/>
+            <ellipse cx="124" cy="132" rx="15" ry="12" fill="none" stroke="#c9b24a" stroke-width="3" opacity="0.8"/>
+            <ellipse cx="118" cy="72" rx="6" ry="5" fill="#6a5631"/>
+        </g>
+        <radialGradient id="hot" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#ff2a00" stop-opacity="0.9"/>
+            <stop offset="0.45" stop-color="#ffd000" stop-opacity="0.7"/>
+            <stop offset="1" stop-color="#00b4ff" stop-opacity="0"/>
+        </radialGradient>
+    </defs>
+</svg>
+
+<div class="preview-bar">
+    <strong>Design preview</strong>
+    <span>Mock-up of the proposed look. Photos are placeholder drawings.</span>
+    <span>
+        <button data-go="home" class="on">Home</button>
+        <button data-go="upload">Upload</button>
+        <button data-go="result">Result</button>
+        <button data-go="how">How It Works</button>
+        <button data-go="about">About</button>
+    </span>
+    <span class="grp">Background:
+        <button data-bg="" class="on">Plain</button>
+        <button data-bg="bg-pattern">Leaf pattern</button>
+        <button data-bg="bg-corner">Corner leaves</button>
+        <button data-bg="bg-fade">Top fade</button>
+        <button data-bg="bg-bold">Strong (for comparison)</button>
+    </span>
+</div>
+
+<header class="navbar">
+    <a class="logo" data-go="home">AgroVision</a>
+    <nav>
+        <a data-go="home" data-nav="home" class="active">Home</a>
+        <a data-go="about" data-nav="about">About</a>
+        <a data-go="how" data-nav="how">How It Works</a>
+        <a data-go="upload" class="nav-cta">Upload</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <!-- HOME -->
+    <section class="page show" id="home">
+        <div class="hero">
+            <div class="hero-text">
+                <p class="eyebrow">Crop disease detection</p>
+                <h1>Check a leaf photo for signs of disease.</h1>
+                <p class="lead">Upload a photo of a single crop leaf. AgroVision predicts the likely disease, shows how confident it is, and suggests what to do next.</p>
+                <a class="btn" data-go="upload">Upload a leaf photo</a>
+            </div>
+            <div class="hero-image">
+                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder for the hero photo">
+                    <rect width="400" height="300" fill="#eef4ef"/>
+                    <use href="#leaf" transform="translate(95 20) scale(1.05) rotate(12 100 100)"/>
+                </svg>
+            </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="features">
+            <div class="feature">
+                <h3>Quick results</h3>
+                <p>Get a prediction a few seconds after you upload.</p>
+            </div>
+            <div class="feature">
+                <h3>Confidence score</h3>
+                <p>See how sure the model is, and when a result is not reliable.</p>
+            </div>
+            <div class="feature">
+                <h3>Next steps</h3>
+                <p>Read about the disease and basic guidance from trusted sources.</p>
+            </div>
+        </div>
+
+        <p class="crops"><strong>Supported crops:</strong> apple, bell pepper, blueberry, cherry, corn, grape, orange, peach, potato, raspberry, soybean, squash, strawberry, tomato.</p>
+
+        <p class="notice">AgroVision gives AI-based predictions only. Please confirm with an agricultural expert.</p>
+    </section>
+
+    <!-- UPLOAD -->
+    <section class="page narrow" id="upload">
+        <h1>Upload a leaf photo</h1>
+        <p class="lead" style="margin-bottom:0">One leaf, close up, on a plain background works best.</p>
+
+        <div class="drop-zone" id="dz-empty">
+            <span class="drop-text">Drag and drop a photo here</span>
+            <span class="drop-or">or</span>
+            <a class="text-link" id="choose">Choose a photo</a>
+        </div>
+        <div class="drop-zone" id="dz-full" hidden>
+            <div class="thumb">
+                <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#8e8e8a"/><use href="#leaf"/></svg>
+            </div>
+            <span class="file-name">tomato_leaf.jpg</span>
+            <a class="text-link" id="change">Change photo</a>
+        </div>
+        <p class="hint">JPG, JPEG or PNG &middot; up to 5MB &middot; Photos are deleted after analysis.</p>
+
+        <div class="tips">
+            <h3>Tips for a clear photo</h3>
+            <ul>
+                <li>Photograph one leaf, filling most of the picture.</li>
+                <li>Use a plain background, such as paper or your palm.</li>
+                <li>Take the photo in daylight, without strong shadows.</li>
+            </ul>
+        </div>
+
+        <button class="btn" id="predict">Check this leaf</button>
+    </section>
+
+    <!-- RESULT -->
+    <section class="page" id="result">
+        <div class="result">
+            <p class="result-label">Most likely</p>
+            <h1>Tomato Early Blight</h1>
+            <p class="result-crop">Crop: Tomato &middot; Fungal disease</p>
+
+            <div class="pair">
+                <figure>
+                    <div class="img"><svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#8e8e8a"/><use href="#leaf"/></svg></div>
+                    <figcaption>Your photo</figcaption>
+                </figure>
+                <figure>
+                    <div class="img">
+                        <svg viewBox="0 0 200 200">
+                            <rect width="200" height="200" fill="#8e8e8a"/><use href="#leaf"/>
+                            <rect width="200" height="200" fill="#1b3fa0" opacity="0.35"/>
+                            <circle cx="76" cy="100" r="46" fill="url(#hot)"/>
+                            <circle cx="124" cy="132" r="36" fill="url(#hot)"/>
+                            <circle cx="118" cy="72" r="20" fill="url(#hot)" opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <figcaption>Model focus. Red and yellow areas influenced the result most.</figcaption>
+                </figure>
+            </div>
+
+            <div class="block">
+                <h2>Confidence</h2>
+                <div class="conf-row">
+                    <div class="conf-bar"><div class="conf-fill" id="fill"></div></div>
+                    <span class="conf-value">94%</span>
+                </div>
+            </div>
+
+            <div class="block">
+                <h2>Other possibilities</h2>
+                <ul class="others">
+                    <li><span>Tomato Target Spot</span><span>4%</span></li>
+                    <li><span>Tomato Septoria Leaf Spot</span><span>1%</span></li>
+                </ul>
+            </div>
+
+            <div class="block">
+                <h2>About this disease</h2>
+                <p>A common fungal disease of tomato and potato. It starts on the older, lower leaves and moves up the plant.</p>
+                <p><strong>Symptoms:</strong> Small dark spots that grow into round brown spots with target-like rings. The area around each spot often turns yellow.</p>
+                <p><strong>Caused by:</strong> Fungus (Alternaria solani and Alternaria tomatophila)</p>
+            </div>
+
+            <div class="block">
+                <h2>What to do</h2>
+                <ol class="guidance">
+                    <li>Remove leaves with spots and bury or burn them. Do not compost them.</li>
+                    <li>Water at the base of the plant and use mulch so soil does not splash onto the leaves.</li>
+                    <li>Space and stake plants so air can move between them.</li>
+                    <li>Rotate crops. Avoid planting tomato or potato in the same spot for two years.</li>
+                </ol>
+                <p class="source">Source: <a href="#" onclick="return false">University of Minnesota Extension</a></p>
+            </div>
+
+            <div class="block">
+                <p class="notice">AgroVision gives AI-based predictions only. Please confirm with an agricultural expert.</p>
+                <p style="margin-top:24px"><a class="btn" data-go="upload">Check another leaf</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="page narrow" id="how">
+        <h1>How it works</h1>
+        <p class="lead" style="margin-bottom:0">Four steps, from photo to result.</p>
+        <ol class="steps">
+            <li><div><h3>Upload a leaf photo</h3><p>Choose a clear photo of one crop leaf.</p></div></li>
+            <li><div><h3>The photo is prepared</h3><p>The system resizes the photo to the size the model expects.</p></div></li>
+            <li><div><h3>The model analyses it</h3><p>A deep learning model trained on 38 leaf conditions compares the photo with what it has learned.</p></div></li>
+            <li><div><h3>You see the result</h3><p>The likely disease, a confidence score, a heatmap of where the model looked, and basic guidance.</p></div></li>
+        </ol>
+        <a class="btn" data-go="upload">Try it now</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page narrow" id="about">
+        <h1>About AgroVision</h1>
+        <p class="lead">A final year project that helps identify crop leaf diseases from a photo.</p>
+        <div class="about-section">
+            <h2>Purpose</h2>
+            <p>To support early identification of crop diseases, so farmers can act sooner.</p>
+        </div>
+        <div class="about-section">
+            <h2>What it does</h2>
+            <ul>
+                <li>Predicts the likely disease from a leaf photo</li>
+                <li>Shows a confidence score and other possibilities</li>
+                <li>Shows which parts of the leaf the model focused on</li>
+                <li>Gives disease information and basic guidance</li>
+            </ul>
+        </div>
+        <div class="about-section">
+            <h2>Limits</h2>
+            <p>The model was trained mostly on photos of single leaves on plain backgrounds. It is less reliable on photos taken in the field. AgroVision gives AI-based predictions only. Please confirm with an agricultural expert.</p>
+        </div>
+        <div class="about-section">
+            <h2>Team</h2>
+            <p>Sara Khadeja and Afiqah Najla, KICT, IIUM. Supervised by Asst. Prof. Dr. Raini binti Hassan.</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">&copy; 2026 AgroVision &middot; Final Year Project, KICT, IIUM</footer>
+
+<script>
+function go(id) {
+    document.querySelectorAll(".page").forEach(function (p) { p.classList.toggle("show", p.id === id); });
+    document.querySelectorAll(".preview-bar button[data-go]").forEach(function (b) { b.classList.toggle("on", b.dataset.go === id); });
+    document.querySelectorAll("[data-nav]").forEach(function (a) { a.classList.toggle("active", a.dataset.nav === id); });
+    var fill = document.getElementById("fill");
+    fill.style.width = "0";
+    if (id === "result") { setTimeout(function () { fill.style.width = "94%"; }, 80); }
+    window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { go(el.dataset.go); });
+});
+document.querySelectorAll("[data-bg]").forEach(function (b) {
+    b.addEventListener("click", function () {
+        document.body.className = b.dataset.bg;
+        document.querySelectorAll("[data-bg]").forEach(function (x) { x.classList.toggle("on", x === b); });
+    });
+});
+var empty = document.getElementById("dz-empty"), full = document.getElementById("dz-full");
+document.getElementById("choose").addEventListener("click", function () { empty.hidden = true; full.hidden = false; });
+document.getElementById("change").addEventListener("click", function () { empty.hidden = false; full.hidden = true; });
+document.getElementById("predict").addEventListener("click", function () {
+    var b = this; b.textContent = "Analysing…"; b.disabled = true;
+    setTimeout(function () { b.textContent = "Check this leaf"; b.disabled = false; go("result"); }, 1200);
+});
+</script>
+</body>
+</html>

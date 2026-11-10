@@ -1,12 +1,17 @@
 /* ---------- Colours (from the Figma wireframes) ---------- */
 :root {
-    --green: #4f9160;
+    --green: #3f7d4f;
     --green-dark: #2f5d3a;
-    --green-light: #e8f3ea;
-    --bg: #fbf8fd;
-    --text: #1f2a22;
-    --muted: #5d6b61;
-    --border: #d9e2db;
+    --green-light: #eef4ef;
+    --bg: var(--white);
+    --white: var(--white);
+    --text: #1c1c1c;
+    --muted: #6b6b6b;
+    --border: #e6e6e3;
+    --amber: var(--amber);
+    --amber-light: var(--amber-light);
+    --red: var(--red);
+    --radius: 8px;
 }
 
 * { box-sizing: border-box; }
@@ -30,7 +35,7 @@ body {
     flex-wrap: wrap;
     gap: 12px;
     padding: 16px 40px;
-    background: #ffffff;
+    background: var(--white);
     border-bottom: 1px solid var(--border);
 }
 
@@ -38,14 +43,13 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.15rem;
+    font-weight: 600;
     color: var(--green-dark);
     text-decoration: none;
 }
-.logo svg { color: var(--green); }
 
-.navbar nav { display: flex; gap: 28px; }
+.navbar nav { display: flex; align-items: center; gap: 28px; }
 
 .navbar nav a {
     color: var(--text);
@@ -57,9 +61,19 @@ body {
 .navbar nav a:hover { color: var(--green); }
 .navbar nav a.active {
     color: var(--green-dark);
-    font-weight: 700;
+    font-weight: 500;
     border-bottom-color: var(--green);
 }
+
+.navbar nav a.nav-cta {
+    background: var(--green);
+    color: var(--white);
+    font-weight: 500;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: var(--radius);
+}
+.navbar nav a.nav-cta:hover { background: var(--green-dark); }
 
 /* ---------- Page content ---------- */
 .container {
@@ -79,13 +93,23 @@ h1 { color: var(--text); margin-top: 0; }
     font-size: 0.9rem;
     color: var(--muted);
     border-top: 1px solid var(--border);
-    background: #ffffff;
+    background: var(--white);
+}
+
+h1, h2, h3 { letter-spacing: -0.01em; }
+
+a:focus-visible,
+button:focus-visible {
+    .btn:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset:2px;
+    }
 }
 
 /* ---------- Phones ---------- */
 @media (max-width: 600px) {
     .navbar { padding: 12px 16px; justify-content: center; }
-    .navbar nav { gap: 18px; }
+    .navbar nav { gap: 14px; font-size: 0.95rem; }
     .container { padding: 24px 16px; }
 }
 
@@ -93,10 +117,10 @@ h1 { color: var(--text); margin-top: 0; }
 .btn {
     display: inline-block;
     background: var(--green);
-    color: #ffffff;
-    padding: 12px 28px;
-    border-radius: 999px;
-    font-weight: 600;
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-weight: 500;
     text-decoration: none;
     transition: background 0.2s;
 }
@@ -135,13 +159,13 @@ h1 { color: var(--text); margin-top: 0; }
     flex: 1;
     max-width: 420px;
     width: 100%;
-    border-radius: 16px;
+    border-radius: var(--radius);
     object-fit: cover;
     aspect-ratio: 4 / 3;
 }
 
 /*On phones, stack the pitcure under text */
-@media (max-width: 700px) {
+@media (max-width: 900px) {
     .hero {
         flex-direction: column;
         text-align: center;
@@ -166,9 +190,9 @@ h1 { color: var(--text); margin-top: 0; }
     }
 
     .feature-card {
-        background: #ffffff;
+        background: var(--white);
         border: 1px solid var(--border);
-        border-radius: 16px;
+        border-radius: var(--radius);
         padding: 24px;
         transition: box-shadow 0.2s, transform 0.2s;
     }
@@ -184,7 +208,7 @@ h1 { color: var(--text); margin-top: 0; }
         justify-content: center;
         width: 48px;
         height: 48px;
-        border-radius: 12px;
+        border-radius: var(--radius);
         background: var(--green-light);
         color: var(--green);
         margin-bottom: 12px;
@@ -202,7 +226,7 @@ h1 { color: var(--text); margin-top: 0; }
     }
 
     /*One card per row on phones*/
-    @media (max-width: 700px) {
+    @media (max-width: 600px) {
         .features {
             grid-template-columns: 1fr;
         }
@@ -215,7 +239,7 @@ h1 { color: var(--text); margin-top: 0; }
         gap: 12px;
         background: var(--green-light);
         border: 1px solid var(--green);
-        border-radius: 12px;
+        border-radius: var(--radius);
         padding: 14px 20px;
         color: var(--green-dark);
     }
@@ -248,9 +272,9 @@ h1 { color: var(--text); margin-top: 0; }
         align-items: center;
         gap: 8px;
         padding: 40px 24px;
-        background: #ffffff;
+        background: var(--white);
         border: 2px dashed var(--border);
-        border-radius: 16px;
+        border-radius: var(--radius);
         cursor: pointer;
         transition: border-color 0.2s, background 0.2s;
     }
@@ -277,7 +301,7 @@ h1 { color: var(--text); margin-top: 0; }
     .preview {
         max-width: 100%;
         max-height: 280px;
-        border-radius: 12px;
+        border-radius: var(--radius);
         margin-top: 12px;
     }
 
@@ -294,7 +318,7 @@ h1 { color: var(--text); margin-top: 0; }
     }
 
     .error-message {
-        color: #b3261e;
+        color: var(--red);
         font-weight: 600;
         min-height: 1.5rem;
         margin: 0 0 16px;
@@ -302,7 +326,7 @@ h1 { color: var(--text); margin-top: 0; }
 
     /* ----- Button Variations ------*/
     .btn-secondary {
-        background: #ffffff;
+        background: var(--white);
         color: var(--green-dark);
         border: 2px solid var(--green);
     }
@@ -346,9 +370,9 @@ h1 { color: var(--text); margin-top: 0; }
 
     .step {
         position: relative;
-        background: #ffffff;
+        background: var(--white);
         border: 1px solid var(--border);
-        border-radius: 16px;
+        border-radius: var(--radius);
         padding: 36px 20px 24px;
         counter-increment: step;
     }
@@ -365,7 +389,7 @@ h1 { color: var(--text); margin-top: 0; }
         line-height: 28px;
         border-radius: 50%;
         background: var(--green);
-        color: #ffffff;
+        color: var(--white);
         font-weight: 700;
         font-size: 0.9rem;
     }
@@ -470,7 +494,7 @@ h1 { color: var(--text); margin-top: 0; }
 
     /* White icon square on the green note card */
     .about-note .feature-icon {
-        background: #ffffff;
+        background: var(--white);
     }
     
     .about-note {
@@ -490,8 +514,8 @@ h1 { color: var(--text); margin-top: 0; }
     /*Banner*/
     .result-banner {
         background: var(--green-dark);
-        color: #ffffff;
-        border-radius: 14px;
+        color: var(--white);
+        border-radius: var(--radius);
         padding: 16px 24px;
     }
 
@@ -512,10 +536,9 @@ h1 { color: var(--text); margin-top: 0; }
     }
 
     .result-banner h1 {
-        font-family: Georgia, "Times New Roman", serif;
-        font-weight: 400;
+        font-weight: 600;
         font-size: 2rem;
-        color: #ffffff;
+        color: var(--white);
         margin: 6px 0 0;
     }
 
@@ -537,14 +560,14 @@ h1 { color: var(--text); margin-top: 0; }
         height: 100%;
         max-height: 240px;
         object-fit: cover;
-        border-radius: 12px;
+        border-radius: var(--radius);
     }
 
     /*Cards*/
     .result-card {
-        background: #ffffff;
+        background: var(--white);
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: var(--radius);
         padding: 16px 20px;
     }
 
@@ -591,7 +614,7 @@ h1 { color: var(--text); margin-top: 0; }
     }
 
     .confidence-value {
-      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 600;
       font-size: 2.6rem;
       color: var(--green);
     }
@@ -635,7 +658,7 @@ h1 { color: var(--text); margin-top: 0; }
       gap: 12px;
       background: var(--green-light);
       border: 1px solid var(--green);
-      border-radius: 10px;
+      border-radius: var(--radius);
       padding: 8px 12px;
       font-size: 0.9rem;
     }
@@ -647,7 +670,7 @@ h1 { color: var(--text); margin-top: 0; }
       height: 24px;
       border-radius: 50%;
       background: var(--green-dark);
-      color: #ffffff;
+      color: var(--white);
       font-weight: 700;
       font-size: 0.8rem;
       display: flex;
@@ -667,7 +690,7 @@ h1 { color: var(--text); margin-top: 0; }
    }
 
    /* Phones */
-@media (max-width: 700px) {
+@media (max-width: 600px) {
     .result-grid {
         grid-template-columns: 1fr;
     }
@@ -683,9 +706,9 @@ h1 { color: var(--text); margin-top: 0; }
     /* ---------- Photo tips ---------- */
     .photo-tips {
     text-align: left;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius);
     padding: 14px 18px;
     margin: 12px 0 16px;
 }
@@ -713,7 +736,7 @@ h1 { color: var(--text); margin-top: 0; }
 
 /* ---------- Uncertain result ---------- */
 .result-banner.uncertain {
-    background: #8a6a1d;
+    background: var(--amber);
 }
 
 .result-card .closest-match {
@@ -722,11 +745,11 @@ h1 { color: var(--text); margin-top: 0; }
 }
 
 .confidence-fill.low {
-    background: #c99a2e;
+    background: var(--amber-light);
 }
 
 .confidence-value.low {
-    color: #8a6a1d;
+    color: var(--amber);
 } 
 
 /* ---------- Grad-CAM ---------- */
@@ -744,7 +767,7 @@ h1 { color: var(--text); margin-top: 0; }
 .gradcam-placeholder {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 12px;
+    border-radius: var(--radius);
 }
 
 .gradcam-image {
