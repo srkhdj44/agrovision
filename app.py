@@ -30,14 +30,14 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Load the disease information once, when the app starts
 with open (os.path.join(BASE_DIR, "data", "diseases.json"), encoding="utf-8") as f:
     DISEASES = json.load(f)
+# Crop names for the "Supported crops" line, available in every template
+app.jinja_env.globals["supported_crops"] = sorted({d["crop"] for d in DISEASES.values()})
 
 def predict_placeholder(image_path):
-    """Temporary stand-in for the real model.
-    Picks a random class that has information with a confidence.
-    Replace this with the real model in week 6."""
-    class_name = random.choice(list(DISEASES.keys()))
-    confidence = round(random.uniform(0.30, 0.99), 2)
-    return class_name, confidence
+    names = random.sample(list(DISEASES.keys()), 3)
+    first = round(random.uniform(0.30, 0.99), 2)
+    rest = 1 - first
+    return [(names[0], first), (names[1], round(rest * 0.7, 2)), (names[2], round(rest * 0.2, 2))]
 
 def allowed_file(filename):
     """Return True if the filename ends with .jpg, .jpeg or .png."""
@@ -85,12 +85,23 @@ def upload():
     saved_path = os.path.join(UPLOAD_FOLDER, saved_name) 
     file.save(saved_path)
 
-    # Predict (placeholder for now) and look up the disease information
+    # Predict and look up the disease information
     if USE_REAL_MODEL:
-        class_name, confidence = predict(saved_path)
+        results = predict(saved_path)
     else:
-        class_name, confidence = predict_placeholder(saved_path)
+        results = predict_placeholder(saved_path)
+    class_name, confidence = results[0]
     info = DISEASES.get(class_name)
+
+    # Other possibilities: the 2nd and 3rd guesses, if they are at least 1%
+    others = []
+    for name, score in results[1:]:
+        if score >=0.01:
+            entry = DISEASES.get(name)
+            others.append({
+                "name": entry["display_name"] if entry else name,
+                "pct": round(score*100),
+            })
 
     return render_template(
         "result.html",
@@ -98,6 +109,7 @@ def upload():
         class_name=class_name,
         confidence=confidence,
         info=info,
+        others=others,
         low_confidence=confidence < CONFIDENCE_THRESHOLD,
     )
 

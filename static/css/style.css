@@ -3,13 +3,11 @@
     --green: #3f7d4f;
     --green-dark: #2f5d3a;
     --green-light: #eef4ef;
-    --bg: var(--white);
-    --white: var(--white);
-    --text: #1c1c1c;
-    --muted: #6b6b6b;
-    --border: #e6e6e3;
-    --amber: var(--amber);
-    --amber-light: var(--amber-light);
+    --bg: #ffffff;
+    --white: #ffffff;
+    --amber: #8a6a1d;
+    --amber-light: #c99a2e;
+    --red: #b3261e;
     --red: var(--red);
     --radius: 8px;
 }
@@ -790,4 +788,19 @@ button:focus-visible {
     font-size: 0.85rem;
     color: var(--muted);
     text-align: center;
+}
+
+/* ---------- Other possibilities ---------- */
+.others-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.others-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
 }

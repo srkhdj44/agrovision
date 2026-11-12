@@ -22,7 +22,9 @@
 
         <input type="file" id="file-input" name="leaf_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden>
 
-        <p class="upload-hint">Supported formats: JPG, JPEG, PNG . Max file size: 5MB</p> {% include "_photo_tips.html" %}
+        <p class="upload-hint">Supported formats: JPG, JPEG, PNG &middot; Max file size: 5MB</p>
+        <p class="upload-hint"><strong>Supported crops:</strong> {{ supported_crops | join(", ") }}</p>
+        {% include "_photo_tips.html" %}
         <p id="error-message" class="error-message" role="alert">{{ error or ""}}</p>
         {% if success %}
         <p class="success-message">{{ success }}</p>

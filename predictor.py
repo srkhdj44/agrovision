@@ -22,11 +22,11 @@ def prepare_image(image_path):
     arr = np.expand_dims(arr, axis=0)
     return arr
 
-def predict(image_path):
+def predict(image_path, top=3):
     arr = prepare_image(image_path)
     probs = model.predict(arr, verbose=0)[0]
-    idx = int(np.argmax(probs))
-    return CLASS_NAMES[idx], round(float(probs[idx]), 2)
+    best = np.argsort(probs)[::-1][:top]
+    return [(CLASS_NAMES[i], round(float(probs[i]), 2)) for i in best]
 
 if __name__ == "__main__":
     print(predict(os.path.join(BASE_DIR, "static", "uploads", "test.jpg")))

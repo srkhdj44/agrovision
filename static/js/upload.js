@@ -5,6 +5,7 @@ const preview = document.getElementById("preview");
 const fileName = document.getElementById("file-name")
 const errorMessage = document.getElementById("error-message");
 const predictBtn = document.getElementById("predict-btn");
+const uploadForm = document.getElementById("upload-form");
 
 // ------ 2. Rules for  valid file ------*/
 const ALLOWED_TYPES = ["image/jpeg", "image/png"];
@@ -72,3 +73,15 @@ fileInput.files = transfer.files;
 handleFile(file);
 
 });
+
+// ------ 6. Show a loading state while the model runs ------//
+uploadForm.addEventListener("submit", function () {
+    predictBtn.disabled = true;
+    predictBtn.textContent = "Analysing...";
+});
+
+// If the user comes back with the Back button, reset the button
+window.addEventListener("pageshow", function () {
+    predictBtn.textContent = "Predict Diseases";
+    predictBtn.disabled = fileInput.files.length === 0;
+})

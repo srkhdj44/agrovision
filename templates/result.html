@@ -101,6 +101,18 @@
         <span class="confidence-value {{ 'low' if low_confidence }}">{{ pct }}%</span>
     </div>
 
+    <!-- Other possibilities-->
+     {% if others %}
+     <div class="result-card">
+        <h2 class="card-label">Other Possibilities</h2>
+        <ul class="others-list">
+            {% for other in others %}
+            <li><span>{{ other.name }}</span><span>{{ other.pct }}%</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <!-- Guidance: only when the result is reliable -->
     {% if not low_confidence and info and info.guidance %}
     <div class="result-card">
