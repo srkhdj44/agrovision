@@ -4,7 +4,7 @@ import random
 import uuid
 
 from flask import Flask, render_template, request
-from PIL import Image
+from PIL import Image, ImageOps
 
 app = Flask(__name__)
 
@@ -37,8 +37,7 @@ def predict_placeholder(image_path):
     names = random.sample(list(DISEASES.keys()), 3)
     first = round(random.uniform(0.30, 0.99), 2)
     rest = 1 - first
-    return [(names[0], first), (names[1], round(rest * 0.7, 2)), (names[2], round(rest * 0.2, 2))]
-
+    return [(names[0], first), (names[1], round(rest * 0.7, 2)), (names[2], round(rest * 0.2, 2))], None
 def allowed_file(filename):
     """Return True if the filename ends with .jpg, .jpeg or .png."""
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -80,16 +79,17 @@ def upload():
 
     # All checks passed. save the image with a unique name
     file.stream.seek(0)
-    extension = file.filename.rsplit(".",1)[1].lower()
-    saved_name = f"{uuid.uuid4().hex}.{extension}"
-    saved_path = os.path.join(UPLOAD_FOLDER, saved_name) 
-    file.save(saved_path)
+    image = Image.open(file.stream)
+    image = ImageOps.exif_transpose(image).convert("RGB")
+    saved_name = f"{uuid.uuid4().hex}.jpg"
+    saved_path = os.path.join(UPLOAD_FOLDER, saved_name)
+    image.save(saved_path, quality=90)
 
     # Predict and look up the disease information
     if USE_REAL_MODEL:
-        results = predict(saved_path)
+        results, overlay = predict(saved_path)
     else:
-        results = predict_placeholder(saved_path)
+        results, overlay = predict_placeholder(saved_path)
     class_name, confidence = results[0]
     info = DISEASES.get(class_name)
 
@@ -103,6 +103,12 @@ def upload():
                 "pct": round(score*100),
             })
 
+    # Save the Grad-CAM heatmap next to the upload
+    heatmap_file = None
+    if overlay is not None:
+        heatmap_file = saved_name.replace(".jpg", "_heatmap.jpg")
+        overlay.save(os.path.join(UPLOAD_FOLDER, heatmap_file), quality=90)
+
     return render_template(
         "result.html",
         image_file=saved_name,
@@ -111,6 +117,7 @@ def upload():
         info=info,
         others=others,
         low_confidence=confidence < CONFIDENCE_THRESHOLD,
+        heatmap_file=heatmap_file,
     )
 
 @app.errorhandler(413)
