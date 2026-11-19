@@ -4,32 +4,43 @@
 
 {% block content %}
 <section class="upload-page">
-    <h1>Upload Leaf Image</h1>
-    <p class="subtitle">Upload a clear image of the leaf.</p>
+    <h1>Upload a leaf photo</h1>
+    <p class="subtitle">One leaf, close up, on a plain background works best.</p>
 
     <form method="post" enctype="multipart/form-data" id="upload-form">
-        <label for="file-input" class="drop-zone" id="drop-zone">
-            <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
-                <path fill="currentColor" d="M19.4 10A7 7 0 0 0 6.1 8.1 5.5 5.5 0 0 0 6.5 19H11v-4H8l4-4 4 4h-3v4h5.5a4.5 4.5 0 0 0 .9-9z"/>
-            </svg>
-            <span class="drop-text">Drag &amp; drop an image here</span>
-            <span class="drop-or">or</span>
-            <span class="btn btn-secondary">Choose Image</span>
+        <input type="file" id="file-input" name="leaf_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="visually-hidden">
 
-            <img id="preview" class="preview" alt="Preview of the selected leaf image" hidden>
-            <span id="file-name" class="file-name"></span>
+        <label for="file-input" class="drop-zone" id="drop-zone">
+            <span class="drop-state" id="drop-empty">
+                <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
+                    <path fill="currentColor" d="M19.4 10A7 7 0 0 0 6.1 8.1 5.5 5.5 0 0 0 6.5 19H11v-4H8l4-4 4 4h-3v4h5.5a4.5 4.5 0 0 0 .9-9z"/>
+                </svg>
+                <span class="drop-text">Drag &amp; drop a photo here</span>
+                <span class="drop-or">or</span>
+                <span class="btn btn-secondary">Choose Image</span>
+            </span>
+
+            <span class="drop-state" id="drop-selected" hidden>
+                <img id="preview" class="preview" alt="Preview of the selected leaf photo">
+                <span id="file-name" class="file-name"></span>
+                <span class="change-link">Change photo</span>
+            </span>
         </label>
 
-        <input type="file" id="file-input" name="leaf_image" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden>
-
         <p class="upload-hint">Supported formats: JPG, JPEG, PNG &middot; Max file size: 5MB</p>
-        <p class="upload-hint"><strong>Supported crops:</strong> {{ supported_crops | join(", ") }}</p>
+
+        <div class="upload-crops">
+            <span class="crops-label">Supported crops</span>
+            <ul class="crop-list">
+                {% for crop in supported_crops %}
+                <li>{{ crop }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
         {% include "_photo_tips.html" %}
-        <p id="error-message" class="error-message" role="alert">{{ error or ""}}</p>
-        {% if success %}
-        <p class="success-message">{{ success }}</p>
-        {% endif %}
-        <button type="submit" class="btn" id="predict-btn" disabled>Predict Disease</button>
+        <p id="error-message" class="error-message" role="alert">{{ error or "" }}</p>
+        <button type="submit" class="btn" id="predict-btn" disabled>Check this leaf</button>
     </form>
 </section>
 {% endblock %}

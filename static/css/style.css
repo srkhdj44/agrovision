@@ -855,3 +855,52 @@ button:focus-visible {
         grid-template-columns: 1fr;
     }
 }
+
+/* ---------- Upload ---------- */
+[hidden] {
+    display: none !important;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.upload-page form {
+    position: relative;
+}
+
+.visually-hidden:focus-visible + .drop-zone {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+}
+
+.drop-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.change-link {
+    color: var(--green-dark);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.upload-crops {
+    margin: 16px 0 4px;
+}
+
+.upload-crops .crop-list {
+    justify-content: center;
+}
+
+.crops-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
