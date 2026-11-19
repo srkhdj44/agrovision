@@ -86,7 +86,9 @@ uploadForm.addEventListener("submit", function () {
 });
 
 // If the user comes back with the Back button, reset the page
-window.addEventListener("pageshow", function () {
+window.addEventListener("pageshow", function (event) {
     predictBtn.textContent = BUTTON_TEXT;
-    handleFile(fileInput.files[0]);
+    if (event.persisted) {
+        handleFile(fileInput.files[0]);
+    }
 });

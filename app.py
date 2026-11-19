@@ -2,6 +2,7 @@ import json
 import os
 import random
 import uuid
+import numpy as np
 
 from flask import Flask, render_template, request
 from PIL import Image, ImageOps
@@ -15,6 +16,8 @@ ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 # Below this confidence, the app says it is not sure instead of showing a disease.
 # 0.60 is a starting value. Tune in with Afiqah once the real model is in.
 CONFIDENCE_THRESHOLD = 0.60
+# Below this share of plant-coloured pixels, the photo is treated as "not a leaf".
+MIN_PLANT_RATIO = 0.15
 
 # True = use Afiqah's model. False= use the random Placeholder (no tensorflow needed)
 USE_REAL_MODEL = True
@@ -41,6 +44,13 @@ def predict_placeholder(image_path):
 def allowed_file(filename):
     """Return True if the filename ends with .jpg, .jpeg or .png."""
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+def plant_pixel_ratio(image):
+    """Return the share of pixels (0 to 1) that have plant colours."""
+    small = image.resize((100, 100)).convert("HSV")
+    hsv = np.array(small).astype(int)
+    hue, sat, val = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    plant = (hue >= 25) & (hue <= 120) & (sat >= 40) & (val >= 40)
+    return float(plant.mean())
 
 @app.route("/")
 def home():
@@ -81,6 +91,12 @@ def upload():
     file.stream.seek(0)
     image = Image.open(file.stream)
     image = ImageOps.exif_transpose(image).convert("RGB")
+        # Check 4: does it look like a plant photo at all?
+    if plant_pixel_ratio(image) < MIN_PLANT_RATIO:
+        return render_template(
+            "upload.html",
+            error="This photo doesn't look like a crop leaf. Please upload a close-up photo of one leaf.",
+        )
     saved_name = f"{uuid.uuid4().hex}.jpg"
     saved_path = os.path.join(UPLOAD_FOLDER, saved_name)
     image.save(saved_path, quality=90)
