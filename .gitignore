@@ -182,6 +182,7 @@ cython_debug/
 
 # Model and data (too big for GitHub)
 *.keras
+!model/best_model.keras
 *.h5
 dataset/
 data/raw/
