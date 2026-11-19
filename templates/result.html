@@ -4,6 +4,7 @@
 
 {% block content %}
 {% set is_healthy = info and info.status == "healthy" %}
+{% set is_pest = info and info.status == "pest" %}
 {% set pct = (confidence * 100) | round | int %}
 
 <section class="result-page">
@@ -23,10 +24,10 @@
         <span class="result-badge">
             {% if is_healthy %}
                 <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 9z"/></svg>
-                Healthy
+                Likely healthy
             {% else %}
                 <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg>
-                {{ 'Pest detected' if info and info.status == 'pest' else 'Disease detected' }}
+                {{ 'Likely pest' if is_pest else 'Likely disease' }}
             {% endif %}
         </span>
         <h1>{{ info.display_name if info else class_name }}</h1>
@@ -34,41 +35,19 @@
     </div>
     {% endif %}
 
-    <!-- Image + information -->
-    <div class="result-grid">
-        <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="The uploaded leaf image" class="result-image">
-
-        <div class="result-card">
-            {% if low_confidence %}
-                <h2 class="card-title">
-                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
-                    Why am I seeing this?
-                </h2>
-                <p>The model's confidence was too low to give a reliable result. This can happen when the photo is unclear, shows more than one leaf, has a busy background, or is not a crop leaf at all.</p>
-                <p class="closest-match">Closest match: <strong>{{ info.display_name if info else class_name }}</strong> ({{ pct }}%), not reliable.</p>
-                {% include "_photo_tips.html" %}
-            {% else %}
-                <h2 class="card-title">
-                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
-                    {{ 'Leaf Information' if is_healthy else 'Disease Information' }}
-                </h2>
-                {% if info %}
-                    <p>{{ info.description }}</p>
-                    {% if info.symptoms %}<p><strong>Symptoms:</strong> {{ info.symptoms }}</p>{% endif %}
-                    {% if info.cause %}<p><strong>Caused by:</strong> {{ info.cause }}</p>{% endif %}
-                {% else %}
-                    <p>No additional information is available for this class yet.</p>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
-
-        <!-- Grad-CAM: which parts of the leaf the model focused on -->
-    {% if not low_confidence %}
-    
+    <!-- Photo, with the Grad-CAM heatmap when the result is reliable -->
     <div class="result-card">
+        {% if low_confidence %}
+        <h2 class="card-label">Your Photo</h2>
+        <div class="gradcam-grid single">
+            <figure>
+                <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Your uploaded photo" class="gradcam-image">
+            </figure>
+        </div>
+        {% else %}
         <h2 class="card-label">What the Model Looked At</h2>
-        <p class="card-sub">Red and yellow show roughly where the model looked. This is an approximate guide, not an outline of the disease.</p>        <div class="gradcam-grid">
+        <p class="card-sub">Red and yellow show roughly where the model looked. This is an approximate guide, not an outline of the disease.</p>
+        <div class="gradcam-grid">
             <figure>
                 <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Your uploaded leaf" class="gradcam-image">
                 <figcaption>Your photo</figcaption>
@@ -82,11 +61,10 @@
                 <figcaption>Model focus</figcaption>
             </figure>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 
-
-    <!-- Confidence score -->
+    <!-- Confidence score and other possibilities -->
     <div class="result-card confidence-card">
         <div class="confidence-main">
             <h2 class="card-label">Confidence Score</h2>
@@ -99,19 +77,43 @@
             </div>
         </div>
         <span class="confidence-value {{ 'low' if low_confidence }}">{{ pct }}%</span>
+
+        {% if others %}
+        <div class="others">
+            <p class="others-title">Other possibilities</p>
+            <ul class="others-list">
+                {% for other in others %}
+                <li><span>{{ other.name }}</span><span>{{ other.pct }}%</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
 
-    <!-- Other possibilities-->
-     {% if others %}
-     <div class="result-card">
-        <h2 class="card-label">Other Possibilities</h2>
-        <ul class="others-list">
-            {% for other in others %}
-            <li><span>{{ other.name }}</span><span>{{ other.pct }}%</span></li>
-            {% endfor %}
-        </ul>
+    <!-- Disease information, or why the result is uncertain -->
+    <div class="result-card">
+        {% if low_confidence %}
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                Why am I seeing this?
+            </h2>
+            <p>The model's confidence was too low to give a reliable result. This can happen when the photo is unclear, shows more than one leaf, has a busy background, or is not a crop leaf at all.</p>
+            <p class="closest-match">Closest match: <strong>{{ info.display_name if info else class_name }}</strong> ({{ pct }}%), not reliable.</p>
+            {% include "_photo_tips.html" %}
+        {% else %}
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                {{ 'Leaf Information' if is_healthy else 'Disease Information' }}
+            </h2>
+            {% if info %}
+                <p>{{ info.description }}</p>
+                {% if info.symptoms %}<p><strong>Symptoms:</strong> {{ info.symptoms }}</p>{% endif %}
+                {% if info.cause %}<p><strong>Caused by:</strong> {{ info.cause }}</p>{% endif %}
+            {% else %}
+                <p>No additional information is available for this class yet.</p>
+            {% endif %}
+        {% endif %}
     </div>
-    {% endif %}
 
     <!-- Guidance: only when the result is reliable -->
     {% if not low_confidence and info and info.guidance %}
@@ -123,17 +125,18 @@
             {% endfor %}
         </ol>
         {% if info.source %}
-            <p class="result-source">Source: <a href="{{ info.source }}" target="_blank" rel="noopener">{{ info.source }}</a></p>
+            <p class="result-source">Source: <a href="{{ info.source }}" target="_blank" rel="noopener">{{ info.source.split('/')[2].replace('www.', '') }} ↗</a></p>
         {% endif %}
     </div>
     {% endif %}
 
     <div class="notice">
-        <p>AgroVision provides AI-based prediction support only. Please consult an agricultural expert for confirmation.</p>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+        <p>AgroVision gives AI-based predictions only. Please confirm with an agricultural expert.</p>
     </div>
 
     <div class="result-actions">
-        <a href="{{ url_for('upload') }}" class="btn">Upload Another Image</a>
+        <a href="{{ url_for('upload') }}" class="btn">Check another leaf</a>
     </div>
 </section>
 {% endblock %}

@@ -529,21 +529,6 @@ button:focus-visible {
        opacity: 0.85;
     }
 
-    /*Image + Information*/
-     .result-grid {
-        display: grid;
-        grid-template-columns: 2fr 3fr;
-        gap: 16px;
-    }
-
-    .result-image {
-        width: 100%;
-        height: 100%;
-        max-height: 240px;
-        object-fit: cover;
-        border-radius: var(--radius);
-    }
-
     /*Cards*/
     .result-card {
         background: var(--white);
@@ -583,11 +568,13 @@ button:focus-visible {
       margin: -8px 0 10px;
     }
 
-    /*Confidence*/
     .confidence-card {
-      display: flex;
-      align-items: center;
-      gap: 24px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .confidence-value {
+        order: -1;
     }
 
     .confidence-main {
@@ -622,26 +609,27 @@ button:focus-visible {
     }
 
     /* Guidance */
+        /* Guidance */
     .guidance-list {
       list-style: none;
       padding: 0;
       margin: 0;
       counter-reset: guide;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
-    
+
     .guidance-list li {
       counter-increment: guide;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
-      background: var(--green-light);
-      border: 1px solid var(--green);
-      border-radius: var(--radius);
-      padding: 8px 12px;
-      font-size: 0.9rem;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .guidance-list li:first-child {
+      border-top: 0;
+      padding-top: 0;
     }
 
     .guidance-list li::before {
@@ -650,9 +638,9 @@ button:focus-visible {
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--green-dark);
-      color: var(--white);
-      font-weight: 700;
+      background: var(--green-light);
+      color: var(--green-dark);
+      font-weight: 600;
       font-size: 0.8rem;
       display: flex;
       align-items: center;
@@ -660,11 +648,10 @@ button:focus-visible {
     }
 
     .result-card .result-source {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
       margin: 12px 0 0;
-      word-break: break-all;
-   }
+    }
 
    .result-actions {
      text-align: center;
@@ -771,21 +758,6 @@ button:focus-visible {
     font-size: 0.85rem;
     color: var(--muted);
     text-align: center;
-}
-
-/* ---------- Other possibilities ---------- */
-.others-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: 0.95rem;
-    color: var(--muted);
-}
-
-.others-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
 }
 
 /* ---------- Home ---------- */
@@ -903,4 +875,31 @@ button:focus-visible {
 .crops-label {
     font-size: 0.9rem;
     font-weight: 600;
+}
+
+/* ---------- Result page updates ---------- */
+.gradcam-grid.single {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.confidence-card {
+    flex-wrap: wrap;
+}
+
+.others {
+    flex-basis: 100%;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+.result-card .others-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.result-source a {
+    color: var(--green-dark);
 }
